@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000"/><link rel="icon" type="image/jpg" href="./assets/icons/road-sign.jpg">
+  <title>Wet Season Hills</title>
+  <meta name="description" content="Hong Kong landslide incidents, 2000–2024. Where they return, when the wet season piles them up, and which rain days carry the large failures." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Outfit:wght@300;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="static/styles.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="wrap bar-inner">
+      <a class="brand" href="#top">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path d="M2 15 L9 3 L16 15 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+          <path d="M9 7.8 L11.8 12.6 H6.2 Z" fill="currentColor" />
+        </svg>
+        <span>Hills</span>
+      </a>
+      <nav>
+        <a href="#where">Where</a>
+        <a href="#when">When</a>
+        <a href="#scale">Scale</a>
+        <a href="#notes">Notes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero">
+      <p class="kicker green">Hong Kong · 2000–2024</p>
+      <h1 class="display">The hills fail<br />in the same season</h1>
+      <p class="lede">3,645 reported landslide incidents are not scattered evenly across the map or the calendar. They return to the same slopes, and they pile up between June and September.</p>
+      <a class="begin" href="#where">Begin the record <span aria-hidden="true">→</span></a>
+      <ul class="key">
+        <li class="green"><i class="swatch green"></i> Place</li>
+        <li class="sky"><i class="swatch sky"></i> Rain</li>
+        <li class="earth"><i class="swatch earth"></i> Large scale</li>
+      </ul>
+    </section>
+
+    <div class="seam seam-paper-leaf" aria-hidden="true"></div>
+
+    <section class="leaf">
+      <dl class="wrap stats">
+        <div class="stat">
+          <dt>Incidents</dt>
+          <dd class="green" id="n-incidents"></dd>
+          <p>with a known failure date</p>
+        </div>
+        <div class="stat">
+          <dt>Wet season</dt>
+          <dd class="sky" id="n-wet"></dd>
+          <p>fell in June–September</p>
+        </div>
+        <div class="stat">
+          <dt>Large failures</dt>
+          <dd class="earth" id="n-large"></dd>
+          <p>top 5%, at least 174 m³</p>
+        </div>
+        <div class="stat">
+          <dt>Busiest month</dt>
+          <dd class="green" id="n-month"></dd>
+          <p>1,078 incidents</p>
+        </div>
+      </dl>
+    </section>
+
+    <section id="where" class="chapter leaf">
+      <div class="wrap where-grid">
+        <div>
+          <p class="kicker green">01 · The same slopes, again</p>
+          <h2 class="display chapter-title">Where</h2>
+          <p class="copy">Incidents trace the hillside edge of the city: Lantau, the western New Territories, the ridgelines above Kowloon, and pockets of Hong Kong Island and Sai Kung.</p>
+          <p class="copy quiet">Move the years. The hotspots stay. Pale green is density. Amber dots are large failures, sized by volume.</p>
+          <div class="controls">
+            <label>From<select id="year-from"></select></label>
+            <label>To<select id="year-to"></select></label>
+            <p class="count-note" id="on-map"></p>
+          </div>
+        </div>
+        <div class="map-shell"><div id="map" class="map-frame"></div></div>
+      </div>
+    </section>
+
+    <div class="seam seam-leaf-sky" aria-hidden="true"></div>
+
+    <section id="when" class="chapter sky-band">
+      <div class="wrap section-pad">
+        <p class="kicker sky">02 · June carries the year</p>
+        <h2 class="display chapter-title">When</h2>
+        <p class="copy"><span id="n-wet2"></span> of incidents, and <span id="n-large-wet"></span> of large failures, fall in June, July, August and September. June alone accounts for <span id="n-peak2"></span> reports. The line is average Observatory rainfall on the days a failure was recorded.</p>
+        <div class="chart-card">
+          <div id="month-chart"></div>
+          <div class="tip" id="month-tip"></div>
+        </div>
+        <p class="chart-note">Green bars: incidents. Amber cap: large failures. Blue line: mean daily rainfall (mm) on incident days.</p>
+
+        <h3 class="display subhead">Every year has a wet season. Not every year is equal.</h3>
+        <p class="copy quiet">The annual count swings with the storms that arrived. Amber is the large-failure share. The map barely moves; the volume of a given year does.</p>
+        <div class="year-chart" id="year-chart">
+<div class="year-col" title="2000: 259 incidents, 17 large"><i class="lg" style="height:2.56%"></i><i class="rest" style="height:36.50%"></i></div>
+<div class="year-col" title="2001: 165 incidents, 3 large"><i class="lg" style="height:0.45%"></i><i class="rest" style="height:24.43%"></i></div>
+<div class="year-col" title="2002: 107 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:16.14%"></i></div>
+<div class="year-col" title="2003: 165 incidents, 2 large"><i class="lg" style="height:0.30%"></i><i class="rest" style="height:24.59%"></i></div>
+<div class="year-col" title="2004: 48 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:7.24%"></i></div>
+<div class="year-col" title="2005: 346 incidents, 29 large"><i class="lg" style="height:4.37%"></i><i class="rest" style="height:47.81%"></i></div>
+<div class="year-col" title="2006: 141 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:21.12%"></i></div>
+<div class="year-col" title="2007: 68 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:10.11%"></i></div>
+<div class="year-col" title="2008: 663 incidents, 62 large"><i class="lg" style="height:9.35%"></i><i class="rest" style="height:90.65%"></i></div>
+<div class="year-col" title="2009: 60 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:9.05%"></i></div>
+<div class="year-col" title="2010: 163 incidents, 3 large"><i class="lg" style="height:0.45%"></i><i class="rest" style="height:24.13%"></i></div>
+<div class="year-col" title="2011: 54 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:8.14%"></i></div>
+<div class="year-col" title="2012: 107 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:16.14%"></i></div>
+<div class="year-col" title="2013: 161 incidents, 3 large"><i class="lg" style="height:0.45%"></i><i class="rest" style="height:23.83%"></i></div>
+<div class="year-col" title="2014: 84 incidents, 2 large"><i class="lg" style="height:0.30%"></i><i class="rest" style="height:12.37%"></i></div>
+<div class="year-col" title="2015: 65 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:9.65%"></i></div>
+<div class="year-col" title="2016: 119 incidents, 8 large"><i class="lg" style="height:1.21%"></i><i class="rest" style="height:16.74%"></i></div>
+<div class="year-col" title="2017: 69 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:10.26%"></i></div>
+<div class="year-col" title="2018: 152 incidents, 5 large"><i class="lg" style="height:0.75%"></i><i class="rest" style="height:22.17%"></i></div>
+<div class="year-col" title="2019: 77 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:11.46%"></i></div>
+<div class="year-col" title="2020: 127 incidents, 0 large"><i class="lg" style="height:0.00%"></i><i class="rest" style="height:19.16%"></i></div>
+<div class="year-col" title="2021: 83 incidents, 5 large"><i class="lg" style="height:0.75%"></i><i class="rest" style="height:11.76%"></i></div>
+<div class="year-col" title="2022: 36 incidents, 1 large"><i class="lg" style="height:0.15%"></i><i class="rest" style="height:5.28%"></i></div>
+<div class="year-col" title="2023: 271 incidents, 33 large"><i class="lg" style="height:4.98%"></i><i class="rest" style="height:35.90%"></i></div>
+<div class="year-col" title="2024: 55 incidents, 6 large"><i class="lg" style="height:0.90%"></i><i class="rest" style="height:7.39%"></i></div>
+        </div>
+        <div class="year-axis"><span>2000</span><span>2012</span><span>2024</span></div>
+      </div>
+    </section>
+
+    <div class="seam seam-sky-earth" aria-hidden="true"></div>
+
+    <section id="scale" class="chapter earth-band">
+      <div class="wrap section-pad">
+        <p class="kicker earth">03 · The jump is at extreme rain</p>
+        <h2 class="display chapter-title">Scale</h2>
+        <p class="copy">Larger failures do not rise smoothly with every extra millimetre. On days with 0 to 200 mm at the Observatory, roughly 2 to 4 percent of incidents are large. Above 200 mm, that share jumps to 14.1 percent.</p>
+        <div class="bins" id="bins">
+<div class="bin"><div class="label">0 mm</div><div class="track"><span class="" style="width:16.3%"></span></div><div class="meta">2.3% large<small>564 incidents</small></div></div>
+<div class="bin"><div class="label">0–25 mm</div><div class="track"><span class="" style="width:19.9%"></span></div><div class="meta">2.8% large<small>861 incidents</small></div></div>
+<div class="bin"><div class="label">25–50 mm</div><div class="track"><span class="" style="width:25.5%"></span></div><div class="meta">3.6% large<small>389 incidents</small></div></div>
+<div class="bin"><div class="label">50–100 mm</div><div class="track"><span class="" style="width:30.5%"></span></div><div class="meta">4.3% large<small>538 incidents</small></div></div>
+<div class="bin"><div class="label">100–200 mm</div><div class="track"><span class="" style="width:18.4%"></span></div><div class="meta">2.6% large<small>624 incidents</small></div></div>
+<div class="bin"><div class="label">200+ mm</div><div class="track"><span class="hot" style="width:100.0%"></span></div><div class="meta">14.1% large<small>669 incidents</small></div></div>
+        </div>
+        <p class="chart-note">Share of incidents classed as large (at least 174 m³), by rainfall at the Hong Kong Observatory on the failure date.</p>
+
+        <div class="split">
+          <div>
+            <h3 class="display">Most scars are cut slopes</h3>
+            <p class="copy quiet">Natural hillsides show on the map, but the log is dominated by man-made soil cuts. The hazard sits beside roads, footpaths and village houses.</p>
+          </div>
+          <ul class="feats" id="feats">
+<li><span class="row"><b>Soil Cut</b><em>1,482</em></span><div class="hair"><span style="width:100.0%"></span></div></li>
+<li><span class="row"><b>Natural Hillside</b><em>934</em></span><div class="hair"><span style="width:63.0%"></span></div></li>
+<li><span class="row"><b>Soil/Rock Cut</b><em>469</em></span><div class="hair"><span style="width:31.6%"></span></div></li>
+<li><span class="row"><b>Fill Slope</b><em>251</em></span><div class="hair"><span style="width:16.9%"></span></div></li>
+<li><span class="row"><b>Rock Cut</b><em>164</em></span><div class="hair"><span style="width:11.1%"></span></div></li>
+<li><span class="row"><b>Retaining Wall</b><em>119</em></span><div class="hair"><span style="width:8.0%"></span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="seam seam-earth-deep" aria-hidden="true"></div>
+
+    <section class="deep">
+      <div class="wrap section-pad">
+        <p class="kicker green">Takeaways</p>
+        <h2 class="display">Three things the record supports.</h2>
+        <ol class="take-list">
+          <li class="take">
+            <span class="n">01</span>
+            <div>
+              <h3>Risk is a place, not a sprinkle.</h3>
+              <p>Incidents cluster on known hillside ground. Large failures sit inside those clusters. Changing the years on the map does not invent a new geography.</p>
+            </div>
+          </li>
+          <li class="take">
+            <span class="n">02</span>
+            <div>
+              <h3>The wet season is the story's clock.</h3>
+              <p><span id="n-wet3"></span> of incidents and <span id="n-large-wet2"></span> of large failures fall in June–September. June is the single heaviest month, with <span id="n-peak3"></span> reports.</p>
+            </div>
+          </li>
+          <li class="take">
+            <span class="n">03</span>
+            <div>
+              <h3>Extreme rain days carry the large failures.</h3>
+              <p>The share of large incidents stays near 3% until Observatory rainfall exceeds 200 mm, then rises to 14.1%. Temperature was joined to every date and did not separate the record the way that threshold does.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="seam seam-deep-paper" aria-hidden="true"></div>
+
+    <section id="notes" class="chapter wash notes">
+      <div class="wrap section-pad">
+        <p class="kicker green">04 · Method</p>
+        <h2 class="display chapter-title">How to read this</h2>
+        <div class="prose">
+          <p>Incidents are the CEDD Geotechnical Engineering Office public landslide record, kept where a failure date and a Hong Kong 1980 Grid coordinate were both present, then limited to 2000–2024. Coordinates were transformed to WGS84 for the map.</p>
+          <p class="quiet">Rainfall is the Hong Kong Observatory daily total, and temperature is the Observatory daily maximum, both joined on the failure date. That is a city-centre signal. A slope in Sai Kung can fail in a storm that barely registers at the Observatory. Read the rainfall link as context, not as a gauge sitting on the scar.</p>
+          <p class="quiet">“Large” means the top 5 percent of recorded failure volume in this window: at least 174 cubic metres. “Minor” volumes in the source file were kept as 0.5 m³ so they would not disappear from the count.</p>
+          <p>Four variables are on the page: location, time, failure volume, and daily rainfall. Position, colour and size carry them — green heat versus amber dots on the map, green bars versus the blue rain line, and the length of each rainfall bin.</p>
+        </div>
+        <footer class="colophon">
+          <p>Landslide incidents<br />Hong Kong</p>
+          <p>CEDD landslide incidents<br />Hong Kong Observatory rainfall and maximum temperature</p>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="static/JS/data.js"></script>
+  <script src="static/JS/app.js"></script>
+</body>
+</html>
